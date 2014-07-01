@@ -5,20 +5,26 @@ angular.module('starter.services', [])
  */
 .factory('Friends', function() {
 	
+	var contactsLoadedEvent = new Event('contactsLoaded');
+	
 	var friends = [];  
 
   	var fields = ["name", "phoneNumbers"];
-  	var options = new ContactFindOptions();
-	options.filter="";
-	options.multiple=true; 
-  
-  	navigator.contacts.find( fields, function(contacts){
-  		friends = contacts;
-  		console.log("friends.size" + friends.length);
-  		console.log("contacts.size" + contacts.length);
-  	}, function(error){
-  		console.log("Error");
-  	}, options);
+  	document.addEventListener("deviceready", function(){
+		var options = new ContactFindOptions();
+		options.filter="";
+		options.multiple=true; 
+	  
+	  	navigator.contacts.find( fields, function(contacts){
+	  		for (var i=0; i < contacts.length; i++) {
+				friends.push(contacts[i].clone());
+			}
+			document.dispatchEvent(contactsLoadedEvent);
+	  	}, function(error){
+	  		console.log("Error");
+	  	}, options);
+	},
+	false);
 
   	return {
     	all: function() {

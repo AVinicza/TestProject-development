@@ -1,16 +1,24 @@
 angular.module('starter.controllers', [])
 
-.controller('MultiCtrl', function($scope) {
-	function onDeviceReady(){
+.controller('MultiCtrl', function($scope, Friends) {
+	document.addEventListener("contactsLoaded", function(){
 		$scope.friends = Friends.all();
-		$scope.$apply();
-	}
+		if(!$scope.$$phase) {
+		  $scope.$apply();
+		}
+	},
+	false);
+	$scope.friends = Friends.all();
 })
 
 .controller('SingleCtrl', function($scope, Friends) {
-	function onDeviceReady(){
+	document.addEventListener("contactsLoaded", function(){
 		$scope.friends = Friends.all();
-		$scope.$apply();
-	}
+		if(!$scope.$$phase) {
+		  $scope.$apply();
+		}
+	},
+	false);
+	$scope.friends = Friends.all();
 });
 
